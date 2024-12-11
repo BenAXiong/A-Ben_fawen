@@ -1,7 +1,7 @@
 // import { basketballProducts } from "./data";
-import { IndividualProductType, ProductType } from "./types";
+import { IndividualProductType } from "./types";
 
-function IndividualProduct({ product }: IndividualProductType) {
+export function IndividualProduct({ product }: IndividualProductType) {
   return (
     <a key={product.id} href={product.href} className="group">
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">

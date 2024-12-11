@@ -28,6 +28,7 @@ const Conj200 = () => {
   const [maxStreak, setMaxStreak] = useState(0);
   const [answerHistory, setAnswerHistory] = useState<string[]>([]);
 
+  // @ts-ignore
   const [pronounIndex, setPronounIndex] = useState(42);
   const pronouns = [["je"], ["tu"], ["il","elle","on"], ["nous"], ["vous"], ["ils","elles"]];
   // setPronounIndex(getRandomIndex(group.length)); // Randomly pick a pronoun from the group
