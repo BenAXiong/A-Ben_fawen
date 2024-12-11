@@ -1,0 +1,59 @@
+instead of defining infinitives like now, 
+    extract it from the randomized verbs list, from which conjugated will be extracted too...
+
+consider  getting of TextContainer, put popup in card and make button dispear when practice mode is on
+*renames tenses in verbLists then match the rules in verbFilters*
+focus mode :  shrink nav bars and dim light when click c'est parti
+TDL
+- corriger verbsData nager imp + Gsheets
+-----
+
+features list
+___
+MVP
+- login
+- dashboard (...)
+- conj200
+* record/correct
+
+___
+NEXT
+- chiadé exam practice (the kind that makes it fun and people trust the process)
+    - AI correction
+- numbers
+- smart flashcards
+- (reserch other most popular features)
+- toggles for reflexives
+- consider displaying all possible verbTyoes for all tenses but disabling useless ones
+___
+EXTRAS
+- badges
+- leaderboards
+- LE ankify : use notes and recordings to create cards in context with tts or actual audio clips
+- interactive stories
+- verb prepositions: s'interresser à, donner à, etc
+- on mobile, use psace instead of tab to fill placeholder
+
+___________________
+Flow notes
+- currently handleStartPractice takes care of resetting the session (setCurrentVerbIndex)
+    so it's still possible to continue practiceing by clicking on Home
+- the pronoun is decided by pronoun index : the "selectedPronoun must be reconstructed to be accessed (notstate) like with pronouns[pronounIndex]
+
+
+________________
+***To convert verb lists from googlesheet into json***
+
+paste whole sheet in
+    temp-tsv.txt
+    ex https://docs.google.com/spreadsheets/d/1UtU16H8rIlJOhzkkjK4U2zi3P7trgBxfsgv0ssxiA-c/edit?gid=1576486532#gid=1576486532
+run
+    node TSV2json.js
+copy paste content from
+    temp-json.json
+to ex
+    verbs-200.json
+optional : extrat list of infinitives only, run
+    node verbExtraction.js
+then paste content to ex
+    verbs-200-inf.json
