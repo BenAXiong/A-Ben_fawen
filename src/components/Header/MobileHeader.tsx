@@ -28,7 +28,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
         <div className="flex items-center justify-between">
           <Link to={RoutesEnum.Home}>
             {" "}
-            <img className="h-10 w-auto" src={logo} alt="BBaller Boutique" />
+            <img className="h-10 w-auto" src={logo} alt="A-ben français" />
           </Link>
           <button
             type="button"

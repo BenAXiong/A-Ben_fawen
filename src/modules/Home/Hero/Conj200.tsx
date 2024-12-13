@@ -5,6 +5,23 @@ import { speakText } from "../../../utils/tts";
 import Stats from "../../../components/Stats/Stats";
 import Gradient from "./Gradient";
 
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from "../../../lib/firebase"; // Import Firestore instance
+import { DocumentData } from 'firebase/firestore';
+
+interface Session {
+  sessionDate: string;
+  results: string[];
+  verbsPracticed: string[];
+}
+
+interface UserData {
+  sessionData: Session[];
+  totalSessions: number;
+  totalVerbs: number;
+}
+
 const Conj200 = () => {
   const [selectionPopup, setSelectionPopup] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
@@ -144,6 +161,9 @@ const Conj200 = () => {
     }
   };
 
+  const [userData, setUserData] = useState<DocumentData | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       // Check if the click is outside the popup
@@ -156,21 +176,62 @@ const Conj200 = () => {
       if (e.key === "Enter") {
         e.preventDefault(); // Prevent accidental form submission
         handleSubmit();
-      } else if (e.key === "Tab") {
+      } else if (e.key === "Tab" || e.key === "²") {
         e.preventDefault(); // Prevent default Tab behavior
         if (!practiceSession) return;
-        setUserInput(getCorrectAnswer()[0]?.split(' ').pop() ?? ''); // Paste correctAnswer into input field
+        if (e.key === "²") {
+          // setUserInput(getCorrectAnswer()[0]?.split(' ').pop() ?? '')
+          setUserInput(getCorrectAnswer()[0]?.split(' ').pop() ?? '');
+        } else {
+          setUserInput(practiceSession.verbs[currentVerbIndex]);
+        }
+      }
+    };
+
+    const fetchUserData = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (!user) {
+          console.error('User not authenticated');
+          setLoading(false);
+          return;
+        }
+  
+        const userId = user.uid;
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+  
+        if (userDoc.exists()) {
+          setUserData(userDoc.data());
+        } else {
+          console.error('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("mousedown", handleClickOutside); // Listen for clicks
 
+    fetchUserData(); // Fetch user data on component mount
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown); // Cleanup the listener when the component unmounts
       document.removeEventListener("mousedown", handleClickOutside); // Cleanup listener
     };
   }, [handleSubmit, setUserInput]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!userData) {
+    return <div>No data available</div>;
+  }
 
   return (
     <div>
@@ -238,6 +299,26 @@ const Conj200 = () => {
                     setCurrentVerbIndex(0);}}
                 />
               )}
+
+              <div className="fixed right-2/3 top-1/4 transform -translate-x-1/2 -translate-y-1/3 p-4 bg-gray-800 bg-opacity-80 text-white rounded-xl shadow-lg">
+                <h2>Your Session Data</h2>
+                <ul>
+                  {userData.sessionData?.map((session: Session, index: number) => (
+                    <li key={index}>
+                      <strong>
+                        {new Date(session.sessionDate).toLocaleDateString()}{" "}
+                        {new Date(session.sessionDate).toLocaleTimeString()}
+                      </strong>                      {/* <ul>
+                        {session.results?.map((result, idx) => (
+                          <li key={idx}>{result}</li>
+                        ))}
+                      </ul> */}
+                    </li>
+                  ))}
+                </ul>
+                <p>Total Sessions: {userData.totalSessions}</p>
+                <p>Total Verbs: {userData.totalVerbs}</p>
+              </div>
             </div>
           </div>
         </div>

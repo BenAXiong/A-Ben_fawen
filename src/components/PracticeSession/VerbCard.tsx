@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import Button from "../Button";
+import { VerbCardProps } from '../../types/VerbCardProps';
 import { speakText } from "../../utils/tts";
 import { SpeakerWaveIcon, XCircleIcon } from '@heroicons/react/24/outline'
-import { VerbCardProps } from '../../types/VerbCardProps';
+import Button from "../Button";
+
 
 const VerbCard: React.FC<VerbCardProps> = ({ 
   tense,
