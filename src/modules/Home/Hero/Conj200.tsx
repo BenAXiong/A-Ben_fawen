@@ -8,7 +8,6 @@ import Gradient from "./Gradient";
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from "../../../lib/firebase"; // Import Firestore instance
-import { DocumentData } from 'firebase/firestore';
 
 interface Session {
   sessionDate: string;
