@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { addSessionData, getUserData } from "../../lib/firebase/firebaseService"; // Replace with actual paths
 import { getAuth } from "firebase/auth"; // Import Firebase Auth
 

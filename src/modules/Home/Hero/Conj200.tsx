@@ -161,7 +161,7 @@ const Conj200 = () => {
     }
   };
 
-  const [userData, setUserData] = useState<DocumentData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -203,7 +203,7 @@ const Conj200 = () => {
         const userDoc = await getDoc(userDocRef);
   
         if (userDoc.exists()) {
-          setUserData(userDoc.data());
+          setUserData(userDoc.data() as UserData);
         } else {
           console.error('No such document!');
         }
